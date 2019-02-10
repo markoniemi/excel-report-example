@@ -6,6 +6,9 @@
     <groupId>org.excel-report-example</groupId>
     <artifactId>excel-report-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <jacoco.maven.plugin.version>0.8.2</jacoco.maven.plugin.version>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -13,6 +16,16 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.maven.plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>org.excel.export.model*</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
