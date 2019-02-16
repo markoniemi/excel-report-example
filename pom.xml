@@ -7,7 +7,6 @@
     <artifactId>excel-report-example</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
-        <jacoco.maven.plugin.version>0.8.2</jacoco.maven.plugin.version>
         <sonar.coverage.exclusions>**/model/*</sonar.coverage.exclusions>
     </properties>
     <build>
@@ -22,7 +21,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.maven.plugin.version}</version>
+                <version>0.8.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -31,7 +30,7 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>prepare-package</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -59,7 +58,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.0</version>
+            <version>1.16.22</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
