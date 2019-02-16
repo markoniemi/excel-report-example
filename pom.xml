@@ -8,6 +8,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <properties>
     <jacoco.maven.plugin.version>0.8.2</jacoco.maven.plugin.version>
+    <sonar.coverage.exclusions>**/model/*</sonar.coverage.exclusions>
   </properties>
   <build>
     <plugins>
