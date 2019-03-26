@@ -3,13 +3,13 @@ package org.excel.export;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.export.model.Document;
 import org.excel.export.model.Element;
 
 public class DocumentSheet extends ElementSheet {
 
-    public DocumentSheet(Workbook workbook, String name) {
+    public DocumentSheet(XSSFWorkbook workbook, String name) {
         super(workbook, name);
     }
 
@@ -20,6 +20,7 @@ public class DocumentSheet extends ElementSheet {
 
     private void addDocuments(List<Document> documents) {
         Row row = sheet.createRow(rowIndex++);
+        row.setRowStyle(headerStyle);
         int cellIndex = 0;
         setHeaderCell(row, cellIndex++, "Code", 2000);
         setHeaderCell(row, cellIndex++, "Name", 8000);

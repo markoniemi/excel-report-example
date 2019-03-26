@@ -1,5 +1,6 @@
 package org.excel.export;
 
+import java.awt.Color;
 import java.util.Date;
 import java.util.List;
 
@@ -9,25 +10,28 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.excel.export.model.Field;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.excel.export.model.Element;
+import org.excel.export.model.Field;
 
 public class ElementSheet {
     protected static final String NAME = "Elements";
+    private static final Color GREY = new java.awt.Color(192,192,192);
     protected Sheet sheet;
     protected int rowIndex;
     protected final CellStyle headerStyle;
     protected final CellStyle elementStyle;
     protected final CellStyle fieldStyle;
     protected CellStyle dateStyle;
-    protected Workbook workbook;
+    protected XSSFWorkbook workbook;
 
-    public ElementSheet(Workbook workbook, String name) {
+    public ElementSheet(XSSFWorkbook workbook, String name) {
         this.workbook = workbook;
         sheet = workbook.createSheet(name);
         sheet.createFreezePane(0, 1);
-        headerStyle = createStyle(IndexedColors.LIME);
+        headerStyle = createStyle(GREY);
         elementStyle = createStyle(IndexedColors.LIGHT_GREEN);
         fieldStyle = createStyle(IndexedColors.WHITE);
         dateStyle = createStyle(IndexedColors.WHITE);
@@ -37,6 +41,13 @@ public class ElementSheet {
     private CellStyle createStyle(IndexedColors color) {
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFillForegroundColor(color.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return cellStyle;
+    }
+
+    private CellStyle createStyle(Color color) {
+        XSSFCellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFillForegroundColor(new XSSFColor(color));
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return cellStyle;
     }
