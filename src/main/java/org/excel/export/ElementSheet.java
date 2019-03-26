@@ -21,23 +21,24 @@ public class ElementSheet {
     protected final CellStyle elementStyle;
     protected final CellStyle fieldStyle;
     protected CellStyle dateStyle;
+    protected Workbook workbook;
 
     public ElementSheet(Workbook workbook, String name) {
+        this.workbook = workbook;
         sheet = workbook.createSheet(name);
         sheet.createFreezePane(0, 1);
-        headerStyle = workbook.createCellStyle();
-        headerStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        elementStyle = workbook.createCellStyle();
-        elementStyle.setFillForegroundColor(IndexedColors.LIME.getIndex());
-        elementStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        fieldStyle = workbook.createCellStyle();
-        fieldStyle.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-        fieldStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        dateStyle = workbook.createCellStyle();
-        dateStyle.setFillForegroundColor(IndexedColors.LIME.getIndex());
-        dateStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle = createStyle(IndexedColors.LIME);
+        elementStyle = createStyle(IndexedColors.LIGHT_GREEN);
+        fieldStyle = createStyle(IndexedColors.WHITE);
+        dateStyle = createStyle(IndexedColors.WHITE);
         dateStyle.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("dd.MM.yyyy"));
+    }
+
+    private CellStyle createStyle(IndexedColors color) {
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFillForegroundColor(color.getIndex());
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return cellStyle;
     }
 
     public void create(List<Element> elements) {
@@ -52,6 +53,7 @@ public class ElementSheet {
 
     protected void createHeader() {
         Row row = sheet.createRow(rowIndex++);
+        row.setRowStyle(headerStyle);
         int cellIndex = 0;
         setHeaderCell(row, cellIndex++, "Code", 1000);
         setHeaderCell(row, cellIndex++, "Name", 8000);
@@ -77,6 +79,7 @@ public class ElementSheet {
 
     protected void addElement(Element element) {
         Row row = sheet.createRow(rowIndex++);
+        row.setRowStyle(elementStyle);
         int cellIndex = 0;
         setTextCell(row, cellIndex++, element.getCodeName());
         setTextCell(row, cellIndex++, element.getName().getFi());
@@ -102,57 +105,47 @@ public class ElementSheet {
 
     protected void addField(Field field) {
         Row row = sheet.createRow(rowIndex++);
+        row.setRowStyle(fieldStyle);
+        row.setHeight((short) (row.getHeight() * 3));
         int cellIndex = 0;
-        setTextCell(row, cellIndex++, null, fieldStyle);
-        setTextCell(row, cellIndex++, field.getName().getFi(), fieldStyle);
-        setTextCell(row, cellIndex++, null, fieldStyle);
-        setBooleanCell(row, cellIndex++, field.isMandatory(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getType(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getCodeset(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getSubCodeset(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getCodesetExtension(), fieldStyle);
-        setTextCell(row, cellIndex++, null, fieldStyle);
-        setTextCell(row, cellIndex++, null, fieldStyle);
-        setNumberCell(row, cellIndex++, field.getMinLength(), fieldStyle);
-        setNumberCell(row, cellIndex++, field.getMaxLength(), fieldStyle);
-        setNumberCell(row, cellIndex++, field.getDecimals(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getCode(), fieldStyle);
-        setTextCell(row, cellIndex++, null, fieldStyle);
-        setTextCell(row, cellIndex++, field.getPrintId(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getXpath(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getName().getEn(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getName().getSv(), fieldStyle);
-        setTextCell(row, cellIndex++, field.getMetaFieldIdentifier(), fieldStyle);
+        setTextCell(row, cellIndex++, null);
+        setTextCell(row, cellIndex++, field.getName().getFi());
+        setTextCell(row, cellIndex++, null);
+        setBooleanCell(row, cellIndex++, field.isMandatory());
+        setTextCell(row, cellIndex++, field.getType());
+        setTextCell(row, cellIndex++, field.getCodeset());
+        setTextCell(row, cellIndex++, field.getSubCodeset());
+        setTextCell(row, cellIndex++, field.getCodesetExtension());
+        setTextCell(row, cellIndex++, null);
+        setTextCell(row, cellIndex++, null);
+        setNumberCell(row, cellIndex++, field.getMinLength());
+        setNumberCell(row, cellIndex++, field.getMaxLength());
+        setNumberCell(row, cellIndex++, field.getDecimals());
+        setTextCell(row, cellIndex++, field.getCode());
+        setTextCell(row, cellIndex++, null);
+        setTextCell(row, cellIndex++, field.getPrintId());
+        setTextCell(row, cellIndex++, field.getXpath());
+        setTextCell(row, cellIndex++, field.getName().getEn());
+        setTextCell(row, cellIndex++, field.getName().getSv());
+        setTextCell(row, cellIndex++, field.getMetaFieldIdentifier());
     }
 
     protected void setHeaderCell(Row row, int cellIndex, String value, int columnWidth) {
         sheet.setColumnWidth(cellIndex, columnWidth);
-        setTextCell(row, cellIndex, value, headerStyle);
+        setTextCell(row, cellIndex, value);
     }
 
     protected void setTextCell(Row row, int cellIndex, String value) {
-        setTextCell(row, cellIndex, value, elementStyle);
-    }
-
-    protected void setTextCell(Row row, int cellIndex, String value, CellStyle style) {
-        setCellValue(row, cellIndex, value, style);
+        setCellValue(row, cellIndex, value);
     }
 
     protected void setBooleanCell(Row row, int cellIndex, boolean value) {
-        setBooleanCell(row, cellIndex, value, elementStyle);
-    }
-
-    protected void setBooleanCell(Row row, int cellIndex, boolean value, CellStyle style) {
-        setCellValue(row, cellIndex, value ? "k" : "e", style);
+        setCellValue(row, cellIndex, value ? "k" : "e");
     }
 
     protected void setNumberCell(Row row, int cellIndex, int value) {
-        setNumberCell(row, cellIndex, value, elementStyle);
-    }
-
-    protected void setNumberCell(Row row, int cellIndex, int value, CellStyle style) {
         Cell cell = row.createCell(cellIndex);
-        cell.setCellStyle(style);
+        cell.setCellStyle(row.getRowStyle());
         cell.setCellValue(value);
     }
 
@@ -162,9 +155,9 @@ public class ElementSheet {
         cell.setCellValue(value);
     }
 
-    protected void setCellValue(Row row, int cellIndex, String value, CellStyle style) {
+    protected void setCellValue(Row row, int cellIndex, String value) {
         Cell cell = row.createCell(cellIndex);
-        cell.setCellStyle(style);
+        cell.setCellStyle(row.getRowStyle());
         cell.setCellValue(value);
     }
 }

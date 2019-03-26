@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(of="code")
 public class Element {
     private String codeName;
     private LocalizedText name;
