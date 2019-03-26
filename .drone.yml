@@ -1,0 +1,8 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: circleci/openjdk:8-jdk
+  commands:
+  - mvn install verify -DskipTests=true -Dmaven.javadoc.skip=true -B -V
