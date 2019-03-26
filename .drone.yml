@@ -3,6 +3,6 @@ name: default
 
 steps:
 - name: build
-  image: circleci/openjdk:8-jdk
+  image: maven/3.6-jdk-8-alpine
   commands:
   - mvn install verify -DskipTests=true -Dmaven.javadoc.skip=true -B -V
