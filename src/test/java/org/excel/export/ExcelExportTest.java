@@ -1,5 +1,7 @@
 package org.excel.export;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,8 +19,7 @@ import org.excel.export.model.Element;
 import org.excel.export.model.ExportData;
 import org.excel.export.model.Field;
 import org.excel.export.model.LocalizedText;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExcelExportTest {
     String[] codes = { "CGU", "DPO", "EIR", "IPO", "OPO", "CW1", "CW2", "TST", "EIA", "CWT" };
@@ -35,9 +36,9 @@ public class ExcelExportTest {
     private void assertFile(String filename) throws IOException, InvalidFormatException, FileNotFoundException {
         Workbook workbook = WorkbookFactory.create(new FileInputStream(filename));
         Sheet elementSheet = workbook.getSheet("Elements");
-        Assert.assertEquals(41, elementSheet.getPhysicalNumberOfRows());
+        assertEquals(41, elementSheet.getPhysicalNumberOfRows());
         Row row = elementSheet.getRow(0);
-        Assert.assertEquals(20, row.getPhysicalNumberOfCells());
+        assertEquals(20, row.getPhysicalNumberOfCells());
         workbook.close();
     }
 
