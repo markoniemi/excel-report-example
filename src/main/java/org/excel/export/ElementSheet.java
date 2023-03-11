@@ -18,7 +18,6 @@ import org.excel.export.model.Field;
 
 public class ElementSheet {
     protected static final String NAME = "Elements";
-    private static final Color GREY = new java.awt.Color(192,192,192);
     protected Sheet sheet;
     protected int rowIndex;
     protected final CellStyle headerStyle;
@@ -31,7 +30,7 @@ public class ElementSheet {
         this.workbook = workbook;
         sheet = workbook.createSheet(name);
         sheet.createFreezePane(0, 1);
-        headerStyle = createStyle(GREY);
+        headerStyle = createStyle(IndexedColors.GREY_25_PERCENT);
         elementStyle = createStyle(IndexedColors.LIGHT_GREEN);
         fieldStyle = createStyle(IndexedColors.WHITE);
         dateStyle = createStyle(IndexedColors.WHITE);
@@ -41,13 +40,6 @@ public class ElementSheet {
     private CellStyle createStyle(IndexedColors color) {
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setFillForegroundColor(color.getIndex());
-        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        return cellStyle;
-    }
-
-    private CellStyle createStyle(Color color) {
-        XSSFCellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setFillForegroundColor(new XSSFColor(color));
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return cellStyle;
     }
